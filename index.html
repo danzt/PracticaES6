@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="es">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="public/semantic/semantic.min.css"/>
+    <script src="public/jquery.js"></script>
+    <script src="public/semantic/semantic.min.js"></script>
+    <title>Formulario Prueba</title>
+</head>
+
+<body>
+<div id="mensaje_error" class="">
+</div>
+<div class="ui centered grid" id="formulario_usuario">
+    <div class="six wide tablet twelve wide computer column">
+        <div class="ui form">
+            <form class="ui form" id="formulario_crear_usuario">
+                <h3 class="ui horizontal divider header">Datos de Usuario</h3>
+
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Usuario</label>
+                            <input type="text" name="usuario" id="usuario" placeholder="Usuario">
+                        </div>
+                        <div class="field">
+                            <label>Email</label>
+                            <input type="text" id="email" placeholder="Direccion Email">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Password</label>
+                            <input type="password" id="password" placeholder="Password">
+                        </div>
+                        <div class="field">
+                            <label>Confirmar Password</label>
+                            <input type="password" id="password_confirmacion" placeholder="Confirmar Password">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Permisos</label>
+                        </div>
+
+                        <div class="field">
+                            <div class="ui positive action input">
+                                <label for="attachmentName" class="ui icon button btn-file">
+                                    <i class="attachment basic icon"></i>
+                                    <input type="file" id="attachmentName" name="attachmentName" id="_attachmentName">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+                <h3 class="ui horizontal divider header">Datos Personales</h3>
+
+                <h4 class="ui dividing header">Nombre completo</h4>
+
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <input type="text" name="primer_nombre" placeholder="Primer Nombre">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="segundo_nombre" placeholder="Segundo Nombre">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <input type="text" name="primer_apellido" placeholder="Primer Apellido"
+                                   ng-model="DatosForm.primer_apellido">
+                        </div>
+                        <div class="field">
+                            <input type="text" name="segundo_apellido" placeholder="Segundo Apellido">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="three fields">
+                        <div class="field">
+                            <label>Cedula</label>
+                            <input type="text" name="cedula" placeholder="Cedula">
+                        </div>
+                        <div class="field">
+                            <label>Fecha de nacimiento</label>
+                            <input type="text" name="fecha_nacimiento" id="fecha_nacimiento"
+                                   placeholder="Fecha Nacimieto">
+                        </div>
+                        <div class="field">
+                            <label>Sexo</label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="field">
+                    <div class="big positive ui right floated button" id="btn-registrar" onclick="registrar_usuario();">
+                        Registrar
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('.toggle.checkbox').on('click', function () {
+        var rememberme = $('.ui.form').form('get field', 'lg_rememberme').val();
+        $('#value').text(rememberme);
+    });
+
+    var fileExtentionRange = '.zip .rar .tar .pdf .doc .docx .xls .xlsx .ppt .pptx';
+    var MAX_SIZE = 30; // MB
+
+    $(document).on('change', '.btn-file :file', function () {
+        var input = $(this);
+
+        if (navigator.appVersion.indexOf("MSIE") != -1) { // IE
+            var label = input.val();
+
+            input.trigger('fileselect', [1, label, 0]);
+        } else {
+            var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            var numFiles = input.get(0).files ? input.get(0).files.length : 1;
+            var size = input.get(0).files[0].size;
+
+            input.trigger('fileselect', [numFiles, label, size]);
+        }
+    });
+
+    $('.btn-file :file').on('fileselect', function (event, numFiles, label, size) {
+        $('#attachmentName').attr('name', 'attachmentName'); // allow upload.
+
+        var postfix = label.substr(label.lastIndexOf('.'));
+        if (fileExtentionRange.indexOf(postfix.toLowerCase()) > -1) {
+            if (size > 1024 * 1024 * MAX_SIZE) {
+                alert('El archivo debe pesar menos de 30MB.');
+
+                $('#attachmentName').removeAttr('name'); // cancel upload file.
+            } else {
+                $('#_attachmentName').val(label);
+            }
+        } else {
+            alert('Los Archivos deben ser ' + fileExtentionRange);
+
+            $('#attachmentName').removeAttr('name'); // cancel upload file.
+        }
+    });
+
+</script>
+<script src="public/scripts.js"></script>
+</body>
+
+</html>
